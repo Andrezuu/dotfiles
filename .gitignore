@@ -1,0 +1,39 @@
+# --- Secretos y Seguridad ---
+# Nunca versionar llaves privadas ni historiales de comandos
+.ssh/
+id_rsa*
+id_ed25519*
+*.pem
+*.key
+.zsh_history
+.bash_history
+.python_history
+.node_repl_history
+
+# --- Archivos de Entorno ---
+# Evitar que tokens de APIs de proyectos se suban
+.env
+.env.*
+!.env.example
+
+# --- Temporales y Logs ---
+*.log
+*.tmp
+*.swp
+*.swo
+.netrwhist
+undo/
+.DS_Store
+Thumbs.db
+
+# --- Carpetas de Herramientas (Cache) ---
+.npm/
+.pm2/
+.node-gyp/
+.gradle/
+.flutter-devtools/
+
+# --- Configuraciones Locales ---
+# Si tienes algo específico que solo aplica a esta ThinkPad
+*.local.toml
+*.local.zsh
