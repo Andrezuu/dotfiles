@@ -1,0 +1,21 @@
+# ==========================================
+# 1. INICIALIZACIÓN
+# ==========================================
+if command -v starship &> /dev/null; then
+    eval "$(starship init zsh)"
+fi
+
+# ==========================================
+# 2. ALIAS Y ATAJOS MUSCULARES
+# ==========================================
+alias ls='ls --color=auto'
+alias ll='ls -la'
+alias l='ls -l'
+alias vim='nvim'
+alias gs='git status'
+
+# ==========================================
+# 3. VARIABLES DE ENTORNO GLOBALES
+# ==========================================
+export EDITOR="nvim"
+export PATH="$HOME/.local/bin:$PATH"
