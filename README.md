@@ -1,6 +1,6 @@
-# 🚀 Dotfiles: Full Stack Environment
+# Dotfiles: Full Stack Environment
 
-Este repositorio contiene la configuración técnica de mi entorno de desarrollo, optimizado para la productividad en sistemas híbridos (WSL2 + Windows 11). Como CTO y Full Stack Developer, busco consistencia, velocidad y una estética funcional en todas mis herramientas.
+Este repositorio contiene la configuración técnica de mi entorno de desarrollo, optimizado para la productividad en sistemas híbridos (WSL2 + Windows 11).
 
 ## 🛠️ Tech Stack & Herramientas
 
@@ -11,18 +11,10 @@ Este repositorio contiene la configuración técnica de mi entorno de desarrollo
 * **Font:** JetBrainsMono Nerd Font (Crucial para los glifos de Starship).
 * **Networking:** WSL Mirror Mode habilitado para pruebas en dispositivos reales (Android/Mobile).
 
-## Notas
-Para desarrollar flutter con este stack mediante WSL. Mantener ADB del lado de windows y crear un symlink coherente con el .zshrc
+## 📋 Requisitos Previos
 
-## 📂 Estructura del Repositorio
+Antes de aplicar esta configuración en una máquina nueva, asegúrate de tener instalados los siguientes paquetes base en tu sistema:
 
-La gestión de enlaces simbólicos se realiza mediante **GNU Stow**, replicando la estructura del `$HOME`.
-
-```text
-dotfiles/
-├── zsh/                # Configuración de .zshrc y alias
-├── config-files/       # Configuraciones de ~/.config/
-│   ├── nvim/           # Neovim IDE setup
-│   ├── tmux/           # Multiplexor y gestión de paneles
-│   └── starship.toml   # Diseño del prompt universal
-└── scripts/            
+```bash
+# Actualizar e instalar dependencias base (Ubuntu/Debian en WSL)
+sudo apt update && sudo apt install -y git zsh tmux stow curl xclip
