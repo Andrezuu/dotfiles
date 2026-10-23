@@ -11,7 +11,6 @@ $git_branch\
 $git_status\
 [](fg:color_aqua bg:color_blue)\
 $c\
-$cpp\
 $rust\
 $golang\
 $nodejs\
@@ -61,7 +60,7 @@ Fedora = "󰣛"
 Alpine = ""
 Amazon = ""
 Android = ""
-AOSC = ""
+# AOSC = ""
 Arch = "󰣇"
 Artix = "󰣇"
 EndeavourOS = ""

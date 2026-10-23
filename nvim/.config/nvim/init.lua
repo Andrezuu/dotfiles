@@ -13,10 +13,31 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.softtabstop = 4
 vim.opt.colorcolumn = "80,100"
-vim.api.nvim_set_hl(0, "ColorColumn", { ctermbg = 0, bg = "#f2f2f2" })
+-- vim.api.nvim_set_hl(0, "ColorColumn", { ctermbg = 0, bg = "#f2f2f2" })
 
 vim.keymap.set("n", "<leader>", "")
 vim.keymap.set("n", "<leader>pv", vim.cmd.Explore)
+-- Dividir
+vim.keymap.set("n", "<leader>wv", "<cmd>vsplit<CR>", { desc = "Dividir vertical" })
+vim.keymap.set("n", "<leader>ws", "<cmd>split<CR>", { desc = "Dividir horizontal" })
+
+-- Cerrar
+vim.keymap.set("n", "<leader>wc", "<cmd>close<CR>", { desc = "Cerrar ventana actual" })
+vim.keymap.set("n", "<leader>wo", "<cmd>only<CR>", { desc = "Cerrar otras ventanas" })
+-- Moverte con Alt + flechas de vim
+vim.keymap.set("n", "<A-h>", "<C-w>h", { desc = "Ir a ventana izquierda" })
+vim.keymap.set("n", "<A-j>", "<C-w>j", { desc = "Ir a ventana abajo" })
+vim.keymap.set("n", "<A-k>", "<C-w>k", { desc = "Ir a ventana arriba" })
+vim.keymap.set("n", "<A-l>", "<C-w>l", { desc = "Ir a ventana derecha" })
+
+-- Detectar cambios externos en los archivos
+vim.opt.autoread = true
+
+-- Forzar la comprobación en cuanto entres a Neovim o cambies de ventana/buffer
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+	pattern = "*",
+	command = "if mode() != 'c' | checktime | endif",
+})
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
@@ -173,6 +194,36 @@ require("lazy").setup({
 		},
 	},
 
+	{
+		"petertriho/nvim-scrollbar",
+		branch = "refactor/v2",
+		dependencies = { "lewis6991/gitsigns.nvim" },
+		config = function()
+			require("scrollbar").setup({
+				show = true,
+				show_in_active_only = false,
+				hide_if_all_visible = true,
+				handle = {
+					text = " ",
+					blend = 30, -- Transparencia estilo VS Code
+					highlight = "CursorColumn",
+				},
+				marks = {
+					GitAdd = { text = "▎", priority = 7, highlight = "GitSignsAdd" },
+					GitChange = { text = "▎", priority = 7, highlight = "GitSignsChange" },
+					GitDelete = { text = " ", priority = 7, highlight = "GitSignsDelete" },
+					Search = { text = { "-", "=" }, priority = 6, highlight = "Search" },
+					Error = { text = { "-", "=" }, priority = 9, highlight = "DiagnosticVirtualTextError" },
+					Warn = { text = { "-", "=" }, priority = 8, highlight = "DiagnosticVirtualTextWarn" },
+					Info = { text = { "-", "=" }, priority = 4, highlight = "DiagnosticVirtualTextInfo" },
+					Hint = { text = { "-", "=" }, priority = 5, highlight = "DiagnosticVirtualTextHint" },
+				},
+			})
+			require("scrollbar.handlers.gitsigns").setup()
+			require("scrollbar.handlers.search").setup()
+			require("scrollbar.handlers.diagnostic").setup()
+		end,
+	},
 	-- NOTE: Plugins can also be configured to run Lua code when they are loaded.
 	--
 	-- lazy loading plugins that don't need to be loaded immediately at startup.
@@ -713,33 +764,51 @@ require("lazy").setup({
 		end,
 	},
 
-	{ -- You can easily change to a different colorscheme.
-		-- Change the name of the colorscheme plugin below, and then
-		-- change the command in the config to whatever the name of that colorscheme is.
-		--
-		-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+	-- { -- You can easily change to a different colorscheme.
+	-- 	-- Change the name of the colorscheme plugin below, and then
+	-- 	-- change the command in the config to whatever the name of that colorscheme is.
+	-- 	--
+	-- 	-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+	-- 	"folke/tokyonight.nvim",
+	-- 	priority = 1000, -- Make sure to load this before all the other start plugins.
+	-- 	opts = {
+	-- 		style = "night",
+	-- 		transparent = true,
+	-- 		terminal_colors = true,
+	-- 		styles = {
+	-- 			sidebars = "transparent",
+	-- 			-- floats = "transparent",
+	-- 		},
+	-- 	},
+	-- 	init = function()
+	-- 		-- Load the colorscheme here.
+	-- 		-- Like many other themes, this one has different styles, and you could load
+	-- 		-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
+	-- 		vim.cmd.colorscheme("tokyonight-night")
+	--
+	-- 		-- You can configure highlights by doing something like:
+	-- 		vim.cmd.hi("Comment gui=none")
+	-- 		-- Asegurarse que el fondo es transparente
+	-- 		vim.api.nvim_set_hl(0, "Normal", { bg = "NONE", ctermbg = "NONE" })
+	-- 		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE", ctermbg = "NONE" })
+	-- 	end,
+	-- },
+
+	{
 		"folke/tokyonight.nvim",
-		priority = 1000, -- Make sure to load this before all the other start plugins.
+		priority = 1000,
 		opts = {
 			style = "night",
 			transparent = true,
 			terminal_colors = true,
 			styles = {
 				sidebars = "transparent",
-				-- floats = "transparent",
+				floats = "transparent",
 			},
 		},
-		init = function()
-			-- Load the colorscheme here.
-			-- Like many other themes, this one has different styles, and you could load
-			-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
+		config = function(_, opts)
+			require("tokyonight").setup(opts)
 			vim.cmd.colorscheme("tokyonight-night")
-
-			-- You can configure highlights by doing something like:
-			vim.cmd.hi("Comment gui=none")
-			-- Asegurarse que el fondo es transparente
-			vim.api.nvim_set_hl(0, "Normal", { bg = "NONE", ctermbg = "NONE" })
-			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE", ctermbg = "NONE" })
 		end,
 	},
 
